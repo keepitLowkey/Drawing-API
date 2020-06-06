@@ -1,0 +1,27 @@
+loadstring(game:HttpGet'https://raw.githubusercontent.com/keepitLowkey/Drawing-API/master/Source.lua')();
+
+local Square = Drawing.new'Square';
+Square.Position = Vector2.new(250, 250);
+Square.Size = Vector2.new(50, 50);
+Square.Visible = true;
+Square.Filled = true;
+Square.Transparency = 0.5;
+
+local Mouse = game:GetService'Players'.LocalPlayer:GetMouse();
+
+local isDragging;
+local clickedAt;
+Square.MouseButton1Down:Connect(function(X, Y)
+	isDragging = true;
+	clickedAt = Vector2.new(X, Y) - Square.Position;
+	while isDragging do
+		local X, Y = Mouse.X, Mouse.Y;
+		local relativeX, relativeY = X - clickedAt.X, Y - clickedAt.Y;
+		Square.Position = Vector2.new(relativeX, relativeY);
+		
+		game:GetService'RunService'.RenderStepped:Wait();
+	end;
+end);
+Square.MouseButton1Up:Connect(function()
+	isDragging = false;
+end);
